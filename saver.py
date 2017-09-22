@@ -15,7 +15,11 @@ def save(path):
     saver = tf.train.Saver()
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        saver.save(sess,path)
+        if os.path.exists(path):
+            saver.save(sess,path)
+        else:
+            os.mkdir("data_lib")
+            saver.save(sess,path)
         print sess.run(Weight)
 
 # save("data_lib/save.ckpt")
