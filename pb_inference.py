@@ -2,6 +2,7 @@ import re
 import numpy as np
 import os
 import tensorflow as tf
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 import cv2
 from object_detection.utils import ops as utils_ops
@@ -53,13 +54,14 @@ class Model(object):
     def run_inference_for_single_image(self, image):
         """
         inference one image
-        :param image: image path
+        :param image: image path or image numpy
         :return: the prediction result
         """
         if type(image) is str:
             image_np = cv2.imread(image)
         else:
             image_np = image
+        image_np = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
 
         with self.detection_graph.as_default():
             if 'detection_masks' in self.tensor_dict:
